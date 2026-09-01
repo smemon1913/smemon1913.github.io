@@ -466,8 +466,8 @@ async function writeNFC() {
 
   if (!("NDEFReader" in window)) {
     alert(
-      "NFC writing is not supported on this browser.\n\n" +
-      "Use Google Chrome on an Android phone with NFC enabled."
+      "❌ Web NFC is not supported.\n\n" +
+      "Google Chrome Android ব্যবহার করো এবং NFC ON রাখো."
     );
     return;
   }
@@ -476,35 +476,41 @@ async function writeNFC() {
 
     const ndef = new NDEFReader();
 
-    await ndef.write({
-      records: [
-        {
-          recordType: "url",
-          data: profileURL
-        }
-      ]
-    });
+    alert(
+      "📳 NFC Card Ready!\n\n" +
+      "এখন NFC card-টা ফোনের back side-এর NFC area-তে ধরো."
+    );
+
+    await ndef.write(
+      {
+        records: [
+          {
+            recordType: "url",
+            data: profileURL
+          }
+        ]
+      },
+      {
+        overwrite: true
+      }
+    );
 
     alert(
       "✅ NFC Card Ready!\n\n" +
-      "Your SM SOJIB profile has been written to the NFC card."
+      "SM SOJIB profile successfully written to the NFC card."
     );
 
   } catch (error) {
 
-    console.error(error);
+    console.error("NFC ERROR:", error);
 
     alert(
-      "❌ NFC writing failed.\n\n" +
-      "Make sure:\n" +
-      "• NFC is ON\n" +
-      "• NFC card is near the back of your phone\n" +
-      "• The card is writable\n" +
-      "• Chrome is being used"
+      "❌ NFC Writing Failed\n\n" +
+      "Error: " + (error.name || "Unknown") + "\n\n" +
+      "সম্ভব হলে অন্য একটি writable NFC card দিয়ে চেষ্টা করো."
     );
   }
 }
   </script>
-
 </body>
 </html>
