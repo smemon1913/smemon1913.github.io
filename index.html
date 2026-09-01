@@ -150,6 +150,22 @@
       transform: scale(0.98);
     }
 
+    .nfc-btn {
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.nfc-btn:hover {
+  transform: translateY(-2px);
+  border-color: #d4a63a;
+  background: #141a23;
+}
+
+.nfc-btn:active {
+  transform: scale(0.98);
+}
+
     /* =========================
        ICON
     ========================= */
@@ -400,6 +416,21 @@
         </span>
       </a>
 
+      <!-- NFC CARD -->
+<button
+  class="btn nfc-btn"
+  type="button"
+  onclick="writeNFC()"
+  aria-label="Write SM SOJIB profile to NFC card"
+>
+  <span class="ico">N</span>
+
+  <span class="info">
+    <b>Save to NFC Card</b>
+    <span class="small">Tap to write this profile</span>
+  </span>
+</button>
+      
 
       <!-- ADDRESS -->
       <div class="address">
@@ -428,6 +459,52 @@
     </main>
 
   </div>
+  <script>
+async function writeNFC() {
+
+  const profileURL = "https://smemon1913.github.io/";
+
+  if (!("NDEFReader" in window)) {
+    alert(
+      "NFC writing is not supported on this browser.\n\n" +
+      "Use Google Chrome on an Android phone with NFC enabled."
+    );
+    return;
+  }
+
+  try {
+
+    const ndef = new NDEFReader();
+
+    await ndef.write({
+      records: [
+        {
+          recordType: "url",
+          data: profileURL
+        }
+      ]
+    });
+
+    alert(
+      "✅ NFC Card Ready!\n\n" +
+      "Your SM SOJIB profile has been written to the NFC card."
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "❌ NFC writing failed.\n\n" +
+      "Make sure:\n" +
+      "• NFC is ON\n" +
+      "• NFC card is near the back of your phone\n" +
+      "• The card is writable\n" +
+      "• Chrome is being used"
+    );
+  }
+}
+  </script>
 
 </body>
 </html>
